@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { LucideIcon } from 'lucide-react';
 
 export type SideBarGenericProps<T = any> = {
     children: React.ReactNode
@@ -9,7 +8,7 @@ export type SideBarGenericProps<T = any> = {
 
 export function Sidebar({ className, children }: SideBarGenericProps) {
     return (
-        <aside className={cn(['border-r border-border flex flex-col', className])}>
+        <aside className={cn(['border-r border-border flex flex-col ', className])}>
             {children}
         </aside>
     );
@@ -25,7 +24,7 @@ export function SidebarHeader({ className, children }: SideBarGenericProps) {
 
 export function SidebarMain({ className, children }: SideBarGenericProps) {
     return (
-        <main className={cn(['p-6 w-auto', className])}>
+        <main className={cn(['pt-6 px-3 w-auto', className])}>
             {children}
         </main>
     );
@@ -49,7 +48,7 @@ export function SidebarNavHeader({ className, children }: SideBarGenericProps) {
 
 export function SidebarNavHeaderTitle({ className, children }: SideBarGenericProps) {
     return (
-        <div className={cn(['text-xs uppercase text-muted-foreground', className])}>
+        <div className={cn(['text-sm uppercase text-muted-foreground ml-3', className])}>
             {children}
         </div>
     );
@@ -57,40 +56,39 @@ export function SidebarNavHeaderTitle({ className, children }: SideBarGenericPro
 
 export function SidebarNavMain({ className, children }: SideBarGenericProps) {
     return (
-        <main className={cn(['flex flex-col w-auto items-start', className])}>
+        <main className={cn(['flex flex-col w-auto', className])}>
             {children}
         </main>
     );
 }
 
 type SidebarNavLinkProps = {
-    href: string,
-    icon?: LucideIcon,
-    className?: string,
-    children: React.ReactNode
+    href: string
+    active?: boolean
 } //Props para os botões(links) da navbar
 
-export function SidebarNavLink({ className, children, href, icon: Icon }: SideBarGenericProps<SidebarNavLinkProps>) {
+export function SidebarNavLink({ className, children, href, active }: SideBarGenericProps<SidebarNavLinkProps>) {
     return (
-        <Link href={href} className={cn(['text-md px-3 py-2 flex items-center', className])}>
-            {Icon && <Icon className="mr-2 size-5" />}
+        <Link
+            href={href}
+            className={cn(['text-sm px-3 py-2 flex items-center rounded-md',
+                active ? 'bg-secondary' : '',
+                className])}>
             {children}
         </Link>
     );
 }
 
 type SidebarNavTextInfoProps = {
-    icon?: LucideIcon,
     className?: string,
     children: React.ReactNode
 } //Props para os textos informativos da navbar
 
-export function SidebarNavTextInfo({ className, children, icon: Icon }: SideBarGenericProps<SidebarNavTextInfoProps>) {
+export function SidebarNavTextInfo({ className, children }: SideBarGenericProps<SidebarNavTextInfoProps>) {
     return (
-        <div className={cn(['text-md px-3 py-2 flex items-center w-auto', className])}>
-            {Icon && <Icon className="mr-2 size-5" />}
+        <span className={cn(['select-none cursor-default text-sm px-3 py-2 flex items-center w-auto', className])}>
             {children}
-        </div>
+        </span>
     );
 }
 

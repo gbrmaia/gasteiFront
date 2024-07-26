@@ -91,7 +91,7 @@ export function LoginAuth({ className, ...props }: UserAuthFormProps ){
                         onChange={handleChange}
                         required
                         className="mt-1 block w-full"
-                        placeholder="*******"
+                        placeholder={showPassword ? "otario" : "*******"}
                     />
                     <Button
                         type="button"

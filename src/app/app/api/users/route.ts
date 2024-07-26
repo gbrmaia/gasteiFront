@@ -1,15 +1,18 @@
 import { db as prisma } from "@/lib/db"
-import { NextRequest, NextResponse } from "next/server"
+
 import bcrypt from "bcrypt"
 
+import { NextRequest, NextResponse } from "next/server"
+
 export async function POST(request: NextRequest){
+
     const data = await request.json()
     const { name, email, password } = data
     console.log("ROUTE HANDLER", data)
 
     if(!name || !email || !password){
-        return NextResponse.json("Dados inválidos.", { status: 400 })
-    } 
+        return NextResponse.json("Dados inválidos.", { status: 400})
+    }
 
     const isUserExists = await prisma.user.findUnique({
         where: {
@@ -18,12 +21,14 @@ export async function POST(request: NextRequest){
     })
 
     if(isUserExists){
-        return NextResponse.json("Email já existente", { status: 400 })
+        return NextResponse.json({ error: "E-mail já existente."}, { status: 400})
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
+    
+    
     const user = await prisma.user.create({
-        data:{
+        data: {
             email,
             name,
             hashedPassword
@@ -31,5 +36,5 @@ export async function POST(request: NextRequest){
     })
 
 
-    return NextResponse.json({user})
+    return NextResponse.json(user)
 }

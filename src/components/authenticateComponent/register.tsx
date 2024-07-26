@@ -9,6 +9,7 @@ import { Icons } from "../ui/icons";
 import { cn } from "@/lib/utils";
 import { useToast } from "../ui/use-toast";
 import { ToastAction } from "../ui/toast";
+
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 interface IUser {
     name: string;
@@ -17,7 +18,7 @@ interface IUser {
 }
 
 
-export function RegisterAuth({ className, ...props }: UserAuthFormProps ) {
+export function RegisterAuth({ className, ...props }: UserAuthFormProps) {
 
     const { toast } = useToast();
 
@@ -28,43 +29,104 @@ export function RegisterAuth({ className, ...props }: UserAuthFormProps ) {
     });
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState(false);
+
+    //     async function onSubmit(event: React.SyntheticEvent) {
+    //     event.preventDefault();
+    //     setIsLoading(true);
+
+    //     try {
+    //       const request = await fetch('/api/users', {
+    //         method: 'POST',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(data),
+    //       });
+
+    //       const response = await request.json();
+    //       console.log('USER REGISTER FORM', response);
+
+    //       if (!request.ok) {
+    //         toast({
+    //           title: 'Oooops...',
+    //           description: response.error,
+    //           variant: 'destructive',
+    //           action: (
+    //             <ToastAction altText="Tente novamente">Tente Novamente</ToastAction>
+    //           ),
+    //         });
+    //       } else {
+    //         toast({
+    //           title: 'Uhullll',
+    //           description: 'Usuario cadastrado com sucesso',
+    //         });
+    //       }
+
+    //       setData({
+    //         name: '',
+    //         email: '',
+    //         password: '',
+    //       });
+    //     } catch (error) {
+    //       console.error('Erro ao registrar usuário:', error);
+    //       toast({
+    //         title: 'Oooops...',
+    //         description: 'Algo deu errado. Tente novamente.',
+    //         variant: 'destructive',
+    //       });
+    //     } finally {
+    //       setIsLoading(false);
+    //     }
+    //   }
 
     async function onSubmit(event: React.SyntheticEvent) {
         event.preventDefault();
         setIsLoading(true);
 
-        const request = await fetch("/api/users", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(data)
-        })
+        try {
+            const request = await fetch('/app/api/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
 
-        const response = await request.json()
-        console.log("USER REGISTER FORM", response)
-        if(!request.ok){
-            toast({
-                title: "Oooops...",
-                description: response.error,
-                variant: "destructive",
-                action: (
-                    <ToastAction altText="Tente novamente">Tente Novamente</ToastAction>
-                )
+            const response = await request.json();
+            console.log('USER REGISTER FORM', response);
+
+            if (!request.ok) {
+                toast({
+                    title: 'Oooops...',
+                    description: response.error,
+                    variant: 'destructive',
+                    action: (
+                        <ToastAction altText="Tente novamente">Tente Novamente</ToastAction>
+                    ),
+                });
+            } else {
+                toast({
+                    title: 'Uhullll',
+                    description: 'Usuario cadastrado com sucesso',
+                });
+            }
+
+            setData({
+                name: '',
+                email: '',
+                password: '',
             });
-        } else{
+        } catch (error) {
+            console.error('Erro ao registrar usuário:', error);
             toast({
-                title: "Uhullll",
-                description: "Usuario cadastrado com sucesso",
+                title: 'Oooops...',
+                description: 'Algo deu errado. Tente novamente.',
+                variant: 'destructive',
             });
+        } finally {
+            setIsLoading(false);
         }
-
-        setData({
-            name: "",
-            email: "",
-            password: "",
-        })
-        setIsLoading(false);
     }
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -73,7 +135,6 @@ export function RegisterAuth({ className, ...props }: UserAuthFormProps ) {
         })
     }
 
-    const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword((prevState) => !prevState);
@@ -81,8 +142,8 @@ export function RegisterAuth({ className, ...props }: UserAuthFormProps ) {
 
     return (
         <div className={cn("")} {...props}>
-            <form className="space-y-4">
-                <div onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} className="space-y-4">
+                <div>
                     <Label htmlFor="name">Nome</Label>
                     <Input
                         name="name"
@@ -129,7 +190,7 @@ export function RegisterAuth({ className, ...props }: UserAuthFormProps ) {
                         onChange={handleChange}
                         required
                         className="mt-1 block w-full"
-                        placeholder="*******"
+                        placeholder={showPassword ? "caiu denovo kkkkkkkk" : "*******"}
                     />
                     <Button
                         type="button"
